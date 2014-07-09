@@ -10,6 +10,9 @@
 		{
 			if($arg != FALSE){
 				echo '<pre>';
+				echo __METHOD__;
+				
+				echo '<pre>';
 				print_r($arg);
 			}
 		}
