@@ -35,7 +35,7 @@
 				
 				$controller = new $controllerClassName($this->request);
 				
-				$action = $request['action'];
+				$action = isset($request['action']) ? $request['action'] : 'run';
 				
 				$controller->$action();
 			}		
