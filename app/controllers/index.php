@@ -7,28 +7,25 @@
 	{
 		public function __construct($args)
 		{
-			echo '<pre>';
-			echo __CLASS__;
+			//$this->pre_r(__CLASS__);
 			
 			parent::__construct($args);
 		}
 		
 		public function run()
 		{
-			echo '<pre>';
-			echo __METHOD__;
+			//$this->pre_r(__METHOD__);
+			//$this->pre_r($this->Get);
+			//$this->pre_r($this->Post);
 			
-			echo '<pre>';
-			print_r($this->Get);
+			$this->view->smarty->display('index/foo.tpl');
+		}
+		
+		public function foo()
+		{
+			//$this->pre_r(__METHOD__);						
 			
-			echo '<pre>';
-			print_r($this->Post);
-			
-			/*echo '<div>';
-			echo '<form method="post">';
-			echo '<input type="text" name="foo" />';
-			echo '<input type="text" name="bar" />';
-			echo '<input type="submit" value="Send" />';*/		
+			$this->view->smarty->display('index/foo.tpl');
 		}
 	}
 	

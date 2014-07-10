@@ -9,16 +9,16 @@
 		
 		public function __construct($url = FALSE)
 		{
-			echo '<pre>';
-			echo __CLASS__;
+			//$this->pre_r(__CLASS__);
+			
+			set_error_handler(array($this, 'errorHandler'));
 			
 			$this->request = $this->sortRequest($url);
 		}
 		
 		public function run()
 		{
-			echo '<pre>';
-			echo __METHOD__;
+			//$this->pre_r(__METHOD__);
 			
 			$this->autoload($this->request);
 		}
@@ -35,7 +35,7 @@
 				
 				$controller = new $controllerClassName($this->request);
 				
-				$action = isset($request['action']) && method_exists($controller, $request['action']) ? $request['action'] : 'run';
+				$action = $request['action'];
 				
 				$controller->$action();
 			}		
@@ -72,17 +72,45 @@
 				
 				if(isset($_POST) && !empty($_POST)){
 					$array['post'] = $_POST;
+					unset($_POST);
 				}
+				
+				unset($_GET);
 				
 				return $array;
 			} else {
-				$array = array('controller' => 'index');
+				$array = array('controller' => 'index', 'action' => 'run');
 				
 				if(isset($_POST) && !empty($_POST)){
 					$array['post'] = $_POST;
+					unset($_POST);
 				}
 				
 				return $array;
+			}
+		}
+
+		public function errorHandler($errno, $errstr, $errfile, $errline, $errcontex)
+		{
+			$message = '#' . $errno . ' in Class: ' . __CLASS__ . ' and Method: ' . __METHOD__ . ' on line: ' . $errline;
+			
+			echo '<div style="color:red">';
+			echo $message;
+			echo '</div>';
+			
+			error_log($message);
+		}
+		
+		public static function pre_r($data = FALSE)
+		{
+			if($data){
+				echo '<pre>';
+				if(is_array($data) || is_object($data)){
+					print_r($data);
+				} else {
+					echo $data;
+				}
+				echo '</pre>';
 			}
 		}
 	}
