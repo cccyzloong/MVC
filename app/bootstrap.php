@@ -1,94 +1,82 @@
 <?php
-
+	
 	/**
 	 * Bootstrap
 	 */
 	class bootstrap
 	{
-		private $url;
-		public $smarty;
+		private $request;
 		
 		public function __construct($url = FALSE)
 		{
-			$this->url = $url;
-			
 			echo '<pre>';
-			echo __METHOD__;
+			echo __CLASS__;
+			
+			$this->request = $this->sortRequest($url);
 		}
 		
 		public function run()
 		{
-			$this->route($this->url);
-			
 			echo '<pre>';
 			echo __METHOD__;
 			
-			echo '<pre>';
-			print_r($this->url);
+			$this->autoload($this->request);
 		}
 		
-		private function route($url = FALSE)
-		{
-			if($url && !empty($url) && count($url) > 0){
-				$this->url = array_filter(explode('/', $url));
+		private function autoload($request)
+		{			
+			$controllerClassName = $request['controller'];
+			$file = __DIR__ . '/controllers/' . $controllerClassName . '.php';
+			
+			include_once __DIR__ . '/libs/controller.php';
+			
+			if(file_exists($file)){
+				include_once $file;
 				
-				$this->initModules();
-				$this->initModels();
-				$this->initViews();
-				$this->initControllers();
-			} else {
-				include_once 'controllers/index.php';
+				$controller = new $controllerClassName($this->request);
+				$controller->run();
+			}		
+		}	
+		
+		private function sortRequest($request = FALSE)
+		{
+			if($request){
+				$request = array_filter(explode('/', $request));
 				
-				$controller = new index();								
+				$array = array();
+				
+				foreach ($request as $key => $value) {
+					if($key == 0){ $array['controller'] = $value; unset($request[$key]); }
+					if($key == 1){ $array['action'] = $value; unset($request[$key]); }
+				}				
+				
+				if(count($request) > 0){
+					$request = array_values($request);
+					
+					$array['get'] = array();
+					
+					foreach($request as $key => $value){
+						if(isset($request[0])){
+							$array['get'][$request[0]] = isset($request[1]) ? $request[1] : '';
+							unset($request[0], $request[1]);
+							
+							if(count($request) > 0){
+								$request = array_values($request);
+							}
+						}
+					}
+				}
+				
+				if(isset($_POST) && !empty($_POST)){
+					$array['post'] = $_POST;
+				}
+				
+				return $array;
+			} else {
+				$array = array('controller' => 'index');
+				
+				return $array;
 			}
 		}
-		
-		private function initModules()
-		{
-			$file = 'modules/' . $this->url[0] . '.php';
-			
-			if(file_exists($file)){
-				include_once $file;
-				unset($this->url[0]);
-			} else {
-				return FALSE;
-			}
-		}
-		
-		private function initModels()
-		{
-			$file = 'models/' . $this->url[0] . '.php';
-			
-			if(file_exists($file)){
-				include_once $file;
-				unset($this->url[0]);
-			} else {
-				return FALSE;				
-			}
-		}
-		
-		private function initViews()
-		{
-			$file = 'views/' . $this->url[0] . '.php';
-			
-			if(file_exists($file)){
-				include_once $file;
-				unset($this->url[0]);
-			} else {
-				return FALSE;				
-			}	
-		}
-		
-		private function initControllers()
-		{
-			$file = 'controllers/' . $this->url[0] . '.php';
-			
-			if(file_exists($file)){
-				include_once $file;
-				unset($this->url[0]);
-			} else {
-				return FALSE;				
-			}
-		}		
 	}
 	

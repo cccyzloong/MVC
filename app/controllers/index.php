@@ -3,18 +3,26 @@
 	/**
 	 * Index controller
 	 */
-	class index
+	class index extends controller
 	{
-		
-		function __construct($arg = FALSE)
+		public function __construct($args)
 		{
-			if($arg != FALSE){
-				echo '<pre>';
-				echo __METHOD__;
-				
-				echo '<pre>';
-				print_r($arg);
-			}
+			echo '<pre>';
+			echo __CLASS__;
+			
+			parent::__construct($args);
+		}
+		
+		public function run()
+		{
+			echo '<pre>';
+			echo __METHOD__;
+			
+			echo '<pre>';
+			print_r($this->Get);
+			
+			echo '<pre>';
+			print_r($this->Post);
 		}
 	}
 	
