@@ -23,6 +23,12 @@
 			
 			echo '<pre>';
 			print_r($this->Post);
+			
+			/*echo '<div>';
+			echo '<form method="post">';
+			echo '<input type="text" name="foo" />';
+			echo '<input type="text" name="bar" />';
+			echo '<input type="submit" value="Send" />';*/		
 		}
 	}
 	

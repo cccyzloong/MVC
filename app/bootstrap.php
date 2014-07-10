@@ -34,7 +34,10 @@
 				include_once $file;
 				
 				$controller = new $controllerClassName($this->request);
-				$controller->run();
+				
+				$action = isset($request['action']) && method_exists($controller, $request['action']) ? $request['action'] : 'run';
+				
+				$controller->$action();
 			}		
 		}	
 		
@@ -74,6 +77,10 @@
 				return $array;
 			} else {
 				$array = array('controller' => 'index');
+				
+				if(isset($_POST) && !empty($_POST)){
+					$array['post'] = $_POST;
+				}
 				
 				return $array;
 			}

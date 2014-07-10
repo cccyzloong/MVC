@@ -12,8 +12,10 @@
 			echo '<pre>';
 			echo __CLASS__;
 			
-			$this->Get = $args['get'];
-			unset($args['get']);
+			if(isset($args['get'])){
+				$this->Get = $args['get'];
+				unset($args['get']);
+			}
 			
 			if(isset($args['post'])){
 				$this->Post = $args['post'];				
@@ -21,20 +23,5 @@
 			}
 			
 			$this->controller = $args['controller'];
-		}
-		
-		public function run()
-		{
-			echo '<pre>';
-			echo __METHOD__;
-			
-			$controller = new $this->controller();
-			$controller->run();
-		}
-		
-		public function foo()
-		{
-			echo '<pre>';
-			echo __METHOD__;
 		}
 	}
