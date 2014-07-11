@@ -35,7 +35,7 @@
 				
 				$controller = new $controllerClassName($this->request);
 				
-				$action = isset($request['action']) ? $request['action'] : 'run';
+				$action = $request['action'];
 				
 				$controller->$action();
 			}		
@@ -51,7 +51,9 @@
 				foreach ($request as $key => $value) {
 					if($key == 0){ $array['controller'] = $value; unset($request[$key]); }
 					if($key == 1){ $array['action'] = $value; unset($request[$key]); }
-				}				
+				}
+				
+				if(!isset($array['action'])){ $array['action'] = 'run'; }
 				
 				if(count($request) > 0){
 					$request = array_values($request);

@@ -1,9 +1,9 @@
 <?php
 
 	/**
-	 * Index controller
+	 * Bar controller
 	 */
-	class index extends controller
+	class bar extends controller
 	{
 		public function __construct($args)
 		{
@@ -18,14 +18,7 @@
 			//$this->pre_r($this->Get);
 			//$this->pre_r($this->Post);
 			
-			$this->view->smarty->display('index/run.tpl');
-		}
-		
-		public function foo()
-		{
-			//$this->pre_r(__METHOD__);						
-			
-			$this->view->smarty->display('index/foo.tpl');
+			$this->view->smarty->display('bar/run.tpl');
 		}
 	}
 	
