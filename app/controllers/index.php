@@ -24,6 +24,10 @@
 		public function foo()
 		{
 			//$this->pre_r(__METHOD__);						
+			
+			if($this->Post){
+				$this->model->insertData($this->Post);
+			}
 						
 			$this->view->smarty->assign('data', $this->model->getData());
 			

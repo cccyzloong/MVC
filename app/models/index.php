@@ -11,4 +11,9 @@
 		{
 			return $this->DB->query('SELECT * FROM user')->fetchAll();
 		}
+		
+		public function insertData($args)
+		{
+			//$this->DB->prepare("INSERT INTO user (firstname, lastname) VALUES (?)")->execute(array(implode(',', array_values($args))));
+		}
 	}
