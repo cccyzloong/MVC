@@ -19,6 +19,29 @@
 			</div>
 		</form>
 	</div>
+	
+	<div class="col-lg-12">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Firstname</th>
+					<th colspan="2">Lastname</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				{foreach from=$data item="user"}
+				<tr>
+					<td>{$user.id}</td>
+					<td>{$user.firstname}</td>
+					<td>{$user.lastname}</td>
+					<td><form method="post"><input type="hidden" name="userID" value="{$user.id}" /><bottom type="submit" class="btn btn-danger">X</bottom></form></td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	</div>
 
 	{if !empty($get)}
 		<pre>GET 
@@ -29,12 +52,6 @@
 	{if !empty($post)}
 		<pre>POST 
 			{print_r($post)}
-		</pre>
-	{/if}
-	
-	{if !empty($data)}
-		<pre>DATA 
-			{print_r($data)}
 		</pre>
 	{/if}
 	

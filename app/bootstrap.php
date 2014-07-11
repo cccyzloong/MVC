@@ -1,5 +1,7 @@
 <?php
 	
+	require_once __DIR__ . '/libs/magics.php';
+	
 	/**
 	 * Bootstrap
 	 */
@@ -9,16 +11,14 @@
 		
 		public function __construct($url = FALSE)
 		{
-			//$this->pre_r(__CLASS__);
-			
-			set_error_handler(array($this, 'errorHandler'));
+			pre_r(__CLASS__);
 			
 			$this->request = $this->sortRequest($url);
 		}
 		
 		public function run()
 		{
-			//$this->pre_r(__METHOD__);
+			pre_r(__METHOD__);
 			
 			$this->autoload($this->request);
 		}
@@ -89,30 +89,6 @@
 				}
 				
 				return $array;
-			}
-		}
-
-		public function errorHandler($errno, $errstr, $errfile, $errline, $errcontex)
-		{
-			$message = '#' . $errno . ' in Class: ' . __CLASS__ . ' and Method: ' . __METHOD__ . ' on line: ' . $errline;
-			
-			echo '<div style="color:red">';
-			echo $message;
-			echo '</div>';
-			
-			error_log($message);
-		}
-		
-		public static function pre_r($data = FALSE)
-		{
-			if($data){
-				echo '<pre>';
-				if(is_array($data) || is_object($data)){
-					print_r($data);
-				} else {
-					echo $data;
-				}
-				echo '</pre>';
 			}
 		}
 	}

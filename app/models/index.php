@@ -8,12 +8,12 @@
 		}
 		
 		public function getData()
-		{
-			return $this->DB->query('SELECT * FROM user')->fetchAll();
+		{			
+			return $this->DB->query('SELECT * FROM user')->fetchAll();;
 		}
 		
 		public function insertData($args)
 		{
-			//$this->DB->prepare("INSERT INTO user (firstname, lastname) VALUES (?)")->execute(array(implode(',', array_values($args))));
+			$this->DB->prepare('INSERT INTO user (firstname, lastname) VALUES (?, ?)')->execute(array($args['firstname'], $args['lastname']));
 		}
 	}

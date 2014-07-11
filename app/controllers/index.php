@@ -7,23 +7,21 @@
 	{
 		public function __construct($args)
 		{
-			//$this->pre_r(__CLASS__);
+			pre_r(__CLASS__);
 			
 			parent::__construct($args);
 		}
 		
 		public function run()
 		{
-			//$this->pre_r(__METHOD__);
-			//$this->pre_r($this->Get);
-			//$this->pre_r($this->Post);
+			pre_r(__METHOD__);
 			
 			$this->view->smarty->display('index/run.tpl');
 		}
 		
 		public function foo()
 		{
-			//$this->pre_r(__METHOD__);						
+			pre_r(__METHOD__);						
 			
 			if($this->Post){
 				$this->model->insertData($this->Post);

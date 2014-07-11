@@ -9,7 +9,7 @@
 		
 		public function __construct($args)
 		{
-			//$this->pre_r(__CLASS__);
+			pre_r(__CLASS__);
 			
 			if(isset($args['get'])){
 				$this->Get = $args['get'];
@@ -48,19 +48,6 @@
 				$this->model = new $model($args);
 			} else {
 				return FALSE;
-			}
-		}
-		
-		public static function pre_r($data = FALSE)
-		{
-			if($data){
-				echo '<pre>';
-				if(is_array($data) || is_object($data)){
-					print_r($data);
-				} else {
-					echo $data;
-				}
-				echo '</pre>';
 			}
 		}
 	}
