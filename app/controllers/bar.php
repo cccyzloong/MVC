@@ -3,7 +3,7 @@
 	/**
 	 * Bar controller
 	 */
-	class bar extends controller
+	class controller_bar extends controller
 	{
 		public function __construct($args)
 		{

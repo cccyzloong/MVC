@@ -5,11 +5,12 @@
 	 */
 	class model extends PDO
 	{
+		public $DB;
 		
-		function __construct($argument) 
-		{
-			
+		function __construct($args) 
+		{		
+			$this->DB = new PDO('mysql:host=localhost;dbname=mvc;charset=UTF8', 'root', 'beslic');
+			$this->DB->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 		}
-		
 	}
 	

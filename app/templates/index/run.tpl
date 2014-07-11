@@ -2,11 +2,16 @@
 
 {block name="body"}
 	We are in {$smarty.template}<br /><br />
-	<pre>
-		{print_r($get)}
-	</pre>
 	
-	<pre>
-		{print_r($post)}
-	</pre>
+	{if !empty($get)}
+		<pre>GET 
+			{print_r($get)}
+		</pre>
+	{/if}
+	
+	{if !empty($post)}
+		<pre>POST 
+			{print_r($post)}
+		</pre>
+	{/if}
 {/block}

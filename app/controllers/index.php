@@ -3,7 +3,7 @@
 	/**
 	 * Index controller
 	 */
-	class index extends controller
+	class controller_index extends controller
 	{
 		public function __construct($args)
 		{
@@ -24,6 +24,8 @@
 		public function foo()
 		{
 			//$this->pre_r(__METHOD__);						
+						
+			$this->view->smarty->assign('data', $this->model->getData());
 			
 			$this->view->smarty->display('index/foo.tpl');
 		}

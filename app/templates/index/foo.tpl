@@ -31,5 +31,14 @@
 			{print_r($post)}
 		</pre>
 	{/if}
+	
+	{if !empty($data)}
+		<pre>DATA 
+			{print_r($data)}
+		</pre>
+	{/if}
+	
+	{*phpinfo()*}
+	{*debug*}
 
 {/block}
