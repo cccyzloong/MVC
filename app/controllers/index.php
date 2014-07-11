@@ -21,7 +21,7 @@
 		
 		public function foo()
 		{
-			pre_r(__METHOD__);						
+			pre_r(__METHOD__);
 			
 			if($this->Post){
 				$this->model->insertData($this->Post);
