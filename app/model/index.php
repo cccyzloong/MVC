@@ -22,4 +22,11 @@
 			
 			$this->DB->prepare('INSERT INTO user (firstname, lastname) VALUES (?, ?)')->execute(array($args['firstname'], $args['lastname']));
 		}
+		
+		public function deleteData($args)
+		{
+			//pre_r(__METHOD__);
+			
+			$this->DB->prepare('DELETE FROM user WHERE id = ?')->execute(array($args['id']));
+		}
 	}

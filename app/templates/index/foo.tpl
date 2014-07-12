@@ -36,7 +36,12 @@
 					<td>{$user.id}</td>
 					<td>{$user.firstname}</td>
 					<td>{$user.lastname}</td>
-					<td><form method="post"><input type="hidden" name="userID" value="{$user.id}" /><bottom type="submit" class="btn btn-danger">X</bottom></form></td>
+					<td>
+						<form action="/index/delete" method="post" role="form">
+							<input type="hidden" name="id" value="{$user.id}" />
+							<input type="submit" class="btn btn-danger" value="x" />
+						</form>
+					</td>
 				</tr>
 				{/foreach}
 			</tbody>

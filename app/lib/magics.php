@@ -1,6 +1,6 @@
 <?php
 	
-	set_error_handler('errorHandler');
+	//set_error_handler('errorHandler');
 	spl_autoload_register('autoloadMVC');
 	spl_autoload_register('autoloadLibs');
 	

@@ -30,4 +30,9 @@
 			$this->view->smarty->assign('get', $this->Get);
 			$this->view->smarty->assign('post', $this->Post);
 		}
+		
+		public function call($location)
+		{
+			header('Location: ' . $location);
+		}
 	}
