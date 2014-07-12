@@ -34,6 +34,7 @@
 		public function redirect($location = FALSE)
 		{
 			$location = $location && !empty($location) ? $location : '/';
+			$location = $location[0] != '/' ? '/' . $location : $location;
 			
 			header('Location: ' . $location);
 		}
