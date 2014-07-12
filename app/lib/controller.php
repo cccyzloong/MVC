@@ -27,6 +27,8 @@
 
 			$this->model = class_exists($model) ? new $model($args) : FALSE;
 			
+			$this->view->smarty->assign('controller', $args['controller']);
+			$this->view->smarty->assign('action', isset($args['action']) ? $args['action'] : FALSE);
 			$this->view->smarty->assign('get', $this->Get);
 			$this->view->smarty->assign('post', $this->Post);
 		}

@@ -16,9 +16,6 @@
 			$this->smarty->config_dir = __DIR__ . '/../temp/configs/';
 			$this->smarty->cache_dir = __DIR__ . '/../temp/cache/';
 			
-			$this->smarty->assign('controller', $args['controller']);
-			$this->smarty->assign('action', isset($args['action']) ? $args['action'] : FALSE);
-			
 			//$this->smarty->debugging = TRUE;
 		}
 	}
