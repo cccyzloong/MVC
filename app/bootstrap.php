@@ -1,6 +1,6 @@
 <?php
 	
-	require_once __DIR__ . '/libs/magics.php';
+	require_once __DIR__ . '/lib/magics.php';
 	
 	/**
 	 * Bootstrap
@@ -11,35 +11,21 @@
 		
 		public function __construct($url = FALSE)
 		{
-			pre_r(__CLASS__);
+			//pre_r(__CLASS__);
 			
 			$this->request = $this->sortRequest($url);
 		}
 		
 		public function run()
 		{
-			pre_r(__METHOD__);
+			//pre_r(__METHOD__);
 			
-			$this->autoload($this->request);
+			$controllerClass = 'controller_' . $this->request['controller'];
+			$action = $this->request['action'];
+			
+			$controller = new $controllerClass($this->request);
+			$controller->$action();
 		}
-		
-		private function autoload($request)
-		{			
-			$controllerClassName = 'controller_' . $request['controller'];
-			$file = __DIR__ . '/controllers/' . $request['controller'] . '.php';
-			
-			include_once __DIR__ . '/libs/controller.php';
-			
-			if(file_exists($file)){
-				include_once $file;
-				
-				$controller = new $controllerClassName($this->request);
-				
-				$action = $request['action'];
-				
-				$controller->$action();
-			}		
-		}	
 		
 		private function sortRequest($request = FALSE)
 		{
@@ -78,8 +64,6 @@
 				}
 				
 				unset($_GET);
-				
-				return $array;
 			} else {
 				$array = array('controller' => 'index', 'action' => 'run');
 				
@@ -87,9 +71,9 @@
 					$array['post'] = $_POST;
 					unset($_POST);
 				}
-				
-				return $array;
 			}
+			
+			return $array;
 		}
 	}
 	

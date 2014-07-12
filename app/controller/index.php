@@ -7,7 +7,7 @@
 	{
 		public function __construct($args)
 		{
-			pre_r(__CLASS__);
+			//pre_r(__CLASS__);
 			
 			parent::__construct($args);
 		}
