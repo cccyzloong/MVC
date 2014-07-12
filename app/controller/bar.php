@@ -14,7 +14,7 @@
 		
 		public function run()
 		{
-			pre_r(__METHOD__);
+			//pre_r(__METHOD__);
 			
 			$this->view->smarty->display('bar/run.tpl');
 		}

@@ -14,14 +14,14 @@
 		
 		public function run()
 		{
-			pre_r(__METHOD__);
+			//pre_r(__METHOD__);
 			
 			$this->view->smarty->display('index/run.tpl');
 		}
 		
 		public function foo()
 		{
-			pre_r(__METHOD__);
+			//pre_r(__METHOD__);
 			
 			if($this->Post){
 				$this->model->insertData($this->Post);

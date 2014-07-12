@@ -18,7 +18,7 @@
 		
 		public function run()
 		{
-			//pre_r(__METHOD__);
+			////pre_r(__METHOD__);
 			
 			$controllerClass = 'controller_' . $this->request['controller'];
 			$action = $this->request['action'];

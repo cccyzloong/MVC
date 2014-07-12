@@ -11,14 +11,14 @@
 		
 		public function getData()
 		{
-			pre_r(__METHOD__);
+			//pre_r(__METHOD__);
 			
 			return $this->DB->query('SELECT * FROM user')->fetchAll();;
 		}
 		
 		public function insertData($args)
 		{
-			pre_r(__METHOD__);
+			//pre_r(__METHOD__);
 			
 			$this->DB->prepare('INSERT INTO user (firstname, lastname) VALUES (?, ?)')->execute(array($args['firstname'], $args['lastname']));
 		}
