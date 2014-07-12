@@ -39,7 +39,7 @@
 					<td>
 						<form action="/index/delete" method="post" role="form">
 							<input type="hidden" name="id" value="{$user.id}" />
-							<input type="submit" class="btn btn-danger" value="x" />
+							<button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
 						</form>
 					</td>
 				</tr>

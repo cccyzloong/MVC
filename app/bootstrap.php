@@ -13,15 +13,24 @@
 		{
 			//pre_r(__CLASS__);
 			
+			$this->loadConfig();
+			
+			error_reporting(error_type);
+			
 			$this->request = $this->sortRequest($url);
 		}
 		
 		public function run()
 		{
-			////pre_r(__METHOD__);
+			//pre_r(__METHOD__);
 			
 			$controllerClass = 'controller_' . $this->request['controller'];
 			$action = $this->request['action'];
+			
+			if(!class_exists($controllerClass)){
+				$controllerClass = 'controller_' . error_controller;
+				$action = 'run';
+			} 
 			
 			$controller = new $controllerClass($this->request);
 			$controller->$action();
@@ -39,7 +48,7 @@
 					if($key == 1){ $array['action'] = $value; unset($request[$key]); }
 				}
 				
-				if(!isset($array['action'])){ $array['action'] = 'run'; }
+				if(!isset($array['action'])){ $array['action'] = default_action; }
 				
 				if(count($request) > 0){
 					$request = array_values($request);
@@ -65,7 +74,7 @@
 				
 				unset($_GET);
 			} else {
-				$array = array('controller' => 'index', 'action' => 'run');
+				$array = array('controller' => default_controller, 'action' => default_action);
 				
 				if(isset($_POST) && !empty($_POST)){
 					$array['post'] = $_POST;
@@ -74,6 +83,15 @@
 			}
 			
 			return $array;
+		}
+
+		private function loadConfig()
+		{
+			$config = parse_ini_file(__DIR__ . '/config.ini');
+			
+			foreach($config as $key => $value){
+				define($key, $value);
+			}
 		}
 	}
 	

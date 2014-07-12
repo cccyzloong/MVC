@@ -31,8 +31,10 @@
 			$this->view->smarty->assign('post', $this->Post);
 		}
 		
-		public function call($location)
+		public function redirect($location = FALSE)
 		{
+			$location = $location && !empty($location) ? $location : '/';
+			
 			header('Location: ' . $location);
 		}
 	}

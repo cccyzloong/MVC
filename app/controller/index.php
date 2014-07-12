@@ -40,7 +40,7 @@
 				$this->model->deleteData($this->Post);
 			}
 			
-			$this->call('/index/foo');
+			$this->redirect('index/foo');
 		}
 	}
 	
