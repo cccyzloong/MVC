@@ -5,7 +5,7 @@
 	/**
 	 * Bootstrap
 	 */
-	class bootstrap
+	class Bootstrap
 	{
 		private $request;
 		
@@ -15,7 +15,7 @@
 			
 			$this->loadConfig();
 			
-			error_reporting(error_type);
+			error_reporting(ERROR_TYPE);
 			
 			$this->request = $this->sortRequest($url);
 		}
@@ -24,12 +24,12 @@
 		{
 			//pre_r(__METHOD__);
 			
-			$controllerClass = 'controller_' . $this->request['controller'];
+			$controllerClass = ucfirst($this->request['controller']) . 'Controller';
 			$action = $this->request['action'];
 			
 			if(!class_exists($controllerClass)){
-				$controllerClass = 'controller_' . error_controller;
-				$action = 'run';
+				$controllerClass = ucfirst(ERROR_CONTROLLER) . 'Controller';
+				$action = DEFAULT_ACTION;
 			} 
 			
 			$controller = new $controllerClass($this->request);
@@ -48,7 +48,7 @@
 					if($key == 1){ $array['action'] = $value; unset($request[$key]); }
 				}
 				
-				if(!isset($array['action'])){ $array['action'] = default_action; }
+				if(!isset($array['action'])){ $array['action'] = DEFAULT_ACTION; }
 				
 				if(count($request) > 0){
 					$request = array_values($request);
@@ -74,7 +74,7 @@
 				
 				unset($_GET);
 			} else {
-				$array = array('controller' => default_controller, 'action' => default_action);
+				$array = array('controller' => DEFAULT_CONTROLLER, 'action' => DEFAULT_ACTION);
 				
 				if(isset($_POST) && !empty($_POST)){
 					$array['post'] = $_POST;

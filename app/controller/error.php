@@ -3,7 +3,7 @@
 	/**
 	 * Error controller
 	 */
-	class controller_error extends controller
+	class ErrorController extends controller
 	{
 		public function __construct($args)
 		{

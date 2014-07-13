@@ -3,7 +3,7 @@
 	/**
 	 * Index controller
 	 */
-	class controller_index extends controller
+	class IndexController extends controller
 	{
 		public function __construct($args)
 		{

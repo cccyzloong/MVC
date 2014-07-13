@@ -30,15 +30,13 @@
 	
 	function autoloadMVC($class)
 	{
-		$classSplited = explode('_', $class);
+		$class = lcfirst(str_replace('Controller', '', $class));
 		
-		if(count($classSplited) > 1){
-			$file = __DIR__ . '/../' . $classSplited[0] . '/' . $classSplited[1] . '.php';
+		$file = __DIR__ . '/../controllers/' . $class . '.php';
 			
-			if(file_exists($file)){
-				include_once __DIR__ . '/controller.php';
-				include_once $file;
-			}
+		if(file_exists($file)){
+			include_once __DIR__ . '/controller.php';
+			include_once $file;
 		}
 	}
 
