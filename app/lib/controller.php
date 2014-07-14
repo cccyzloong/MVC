@@ -1,6 +1,6 @@
 <?php
 
-	class controller
+	class Controller
 	{
 		public $Get;
 		public $Post;
@@ -21,7 +21,7 @@
 				unset($args['post']);
 			}
 			
-			$this->view = new view($args);
+			$this->view = new View($args);
 			
 			$model = ucfirst($args['controller']) . 'Model';
 

@@ -43,8 +43,8 @@
 
 	function autoloadLibs($class)
 	{		
-		$file = __DIR__ . '/' . $class . '.php';
-		
+		$file = __DIR__ . '/' . lcfirst($class) . '.php';
+
 		if(file_exists($file)){
 			include_once $file;
 		}
