@@ -7,7 +7,7 @@
 	 */
 	class Bootstrap
 	{
-		private $request;
+		private $_request;
 		
 		public function __construct($url = FALSE)
 		{
@@ -17,22 +17,22 @@
 			
 			error_reporting(ERROR_TYPE);
 			
-			$this->request = $this->sortRequest($url);
+			$this->_request = $this->sortRequest($url);
 		}
 		
 		public function run()
 		{
 			//pre_r(__METHOD__);
 			
-			$controllerClass = ucfirst($this->request['controller']) . 'Controller';
-			$action = $this->request['action'];
+			$controllerClass = ucfirst($this->_request['controller']) . 'Controller';
+			$action = $this->_request['action'];
 			
 			if(!class_exists($controllerClass)){
 				$controllerClass = ucfirst(ERROR_CONTROLLER) . 'Controller';
 				$action = DEFAULT_ACTION;
 			} 
 			
-			$controller = new $controllerClass($this->request);
+			$controller = new $controllerClass($this->_request);
 			$controller->$action();
 		}
 		
