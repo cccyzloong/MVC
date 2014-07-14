@@ -23,7 +23,7 @@
 			
 			$this->view = new view($args);
 			
-			$model = 'model_' . $args['controller'];
+			$model = ucfirst($args['controller']) . 'Model';
 
 			$this->model = class_exists($model) ? new $model($args) : FALSE;
 			
