@@ -6,13 +6,15 @@
 	
 	function errorHandler($errno, $errstr, $errfile, $errline, $errcontex)
 	{
-		$message .= '#' . $errno . ' <strong>' . $errstr . '</strong> in File <strong>' . $errfile . '</strong> on line <strong>' . $errline . '</strong>';
+		$message = '#' . $errno . ' <strong>' . $errstr . '</strong> in File <strong>' . $errfile . '</strong> on line <strong>' . $errline . '</strong>';
 			
 		echo '<pre>';
 		echo $message;
 		echo '</pre>';
 		
 		error_log($message);
+		
+		//header('Location: /error');
 	}
 	
 	function pre_r($data = FALSE)
