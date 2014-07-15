@@ -14,4 +14,10 @@
 			</div>
 		</form>
 	</div>
+	
+	{if $session}
+		<pre>SESSION
+			{print_r($session)}
+		</pre>
+	{/if}
 {/block}

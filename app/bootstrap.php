@@ -13,6 +13,10 @@
 		{
 			//pre_r(__CLASS__);
 			
+			session_start();
+			
+			//$_SESSION['user'] = 'Davor Beslic';
+			
 			$this->loadConfig();
 			
 			error_reporting(ERROR_TYPE);

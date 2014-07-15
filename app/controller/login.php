@@ -16,6 +16,8 @@
 		{
 			//pre_r(__METHOD__);
 			
+			$this->view->smarty->assign('session', $_SESSION);
+			
 			$this->view->smarty->display('login/run.tpl');
 		}
 	}

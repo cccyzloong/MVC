@@ -37,7 +37,7 @@
 		
 		$file = __DIR__ . '/../' . $classSufix . '/' . $className . '.php';
 		
-		if(file_exists($file)){
+		if(file_exists($file)){ //echo 'MVC : ' . $file . '<br />';
 			include_once __DIR__ . '/controller.php';
 			include_once $file;
 		}
@@ -46,8 +46,8 @@
 	function autoloadLibs($class)
 	{		
 		$file = __DIR__ . '/' . lcfirst($class) . '.php';
-
-		if(file_exists($file)){
+		
+		if(file_exists($file)){ //echo 'Libs : ' . $file  . '<br />';
 			include_once $file;
 		}
 	}

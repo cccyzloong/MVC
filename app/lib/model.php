@@ -7,7 +7,7 @@
 	{
 		public $DB;
 		
-		function __construct($args) 
+		function __construct() 
 		{
 			//pre_r(__CLASS__);
 			
