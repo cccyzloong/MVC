@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `status`, `created`, `last_login`, `ip`, `login_fails`, `blocked_until`) VALUES
-(1, 'davor.beslic@hotmail.com', 'dd9ee6b063fcb0ada0fc94dfcbe8b74f', 1, 1405202485, 0, '', 0, 0);
+(1, 'test@test.tes', 'dd9ee6b063fcb0ada0fc94dfcbe8b74f', 1, 1405202485, 0, '', 0, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
