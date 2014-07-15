@@ -1,18 +1,20 @@
 <?php
 	
-	//set_error_handler('errorHandler');
+	set_error_handler('errorHandler');
 	spl_autoload_register('autoloadMVC');
 	spl_autoload_register('autoloadLibs');
 	
 	function errorHandler($errno, $errstr, $errfile, $errline, $errcontex)
 	{
-		$message = '#' . $errno . ' in Class: ' . __CLASS__ . ' and Method: ' . __METHOD__ . ' on line: ' . $errline;
-				
+		$message = '#' . $errno . ' <strong>' . $errstr . '</strong> in File <strong>' . $errfile . '</strong> on line <strong>' . $errline . '</strong>';
+			
 		echo '<pre>';
 		echo $message;
 		echo '</pre>';
 		
 		error_log($message);
+		
+		//header('Location: /error');
 	}
 	
 	function pre_r($data = FALSE)
@@ -29,23 +31,22 @@
 	}
 	
 	function autoloadMVC($class)
-	{
-		$classSplited = explode('_', $class);
+	{		
+		$className = strtolower(str_replace(array('Controller', 'Model'), '', $class));
+		$classSufix = strtolower(str_ireplace($className, '', $class));
 		
-		if(count($classSplited) > 1){
-			$file = __DIR__ . '/../' . $classSplited[0] . '/' . $classSplited[1] . '.php';
-			
-			if(file_exists($file)){
-				include_once __DIR__ . '/controller.php';
-				include_once $file;
-			}
+		$file = __DIR__ . '/../' . $classSufix . '/' . $className . '.php';
+		
+		if(file_exists($file)){
+			include_once __DIR__ . '/controller.php';
+			include_once $file;
 		}
 	}
 
 	function autoloadLibs($class)
 	{		
-		$file = __DIR__ . '/' . $class . '.php';
-		
+		$file = __DIR__ . '/' . lcfirst($class) . '.php';
+
 		if(file_exists($file)){
 			include_once $file;
 		}

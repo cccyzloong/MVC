@@ -3,7 +3,7 @@
 	/**
 	 * Model
 	 */
-	class model extends PDO
+	class Model extends PDO
 	{
 		public $DB;
 		
@@ -11,10 +11,10 @@
 		{
 			//pre_r(__CLASS__);
 			
-			$this->DB = new PDO('mysql:host=' . DB_host . ';dbname=' . DB_name . ';charset=' . DB_charset, DB_user, DB_password);
+			$this->DB = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASSWORD);
 			$this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->DB->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-			$this->DB->setAttribute(PDO::ATTR_PERSISTENT, TRUE);			
+			$this->DB->setAttribute(PDO::ATTR_PERSISTENT, TRUE);
 		}
 	}
 	

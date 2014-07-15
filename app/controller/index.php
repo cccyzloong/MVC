@@ -3,7 +3,7 @@
 	/**
 	 * Index controller
 	 */
-	class controller_index extends controller
+	class IndexController extends Controller
 	{
 		public function __construct($args)
 		{
@@ -15,7 +15,7 @@
 		public function run()
 		{
 			//pre_r(__METHOD__);
-			
+
 			$this->view->smarty->display('index/run.tpl');
 		}
 	}
