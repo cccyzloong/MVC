@@ -1,11 +1,7 @@
 {extends file="../document.tpl"}
 
-{block name="body"}
-	We are in {$smarty.template}
-	
-	<div class="clear-fix"></div>
-	
-	<div class="col col-lg-3 m-top-25">
+{block name="body"}	
+	<div class="col col-lg-3">
 		<form role="form" method="post">
 			<div class="form-group">
 		    	<input type="email" class="form-control" name="username" placeholder="Username (E-Mail)" />
