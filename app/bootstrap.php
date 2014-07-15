@@ -27,12 +27,12 @@
 			$controllerClass = ucfirst($this->_request['controller']) . 'Controller';
 			$action = $this->_request['action'];
 			
-			if(!class_exists($controllerClass)){
+			if(!class_exists($controllerClass) || !method_exists($controllerClass, $action)){
 				$controllerClass = ucfirst(ERROR_CONTROLLER) . 'Controller';
 				$action = DEFAULT_ACTION;
 			} 
 			
-			$controller = new $controllerClass($this->_request);
+			$controller = new $controllerClass($this->_request);		
 			$controller->$action();
 		}
 		

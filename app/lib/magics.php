@@ -6,8 +6,8 @@
 	
 	function errorHandler($errno, $errstr, $errfile, $errline, $errcontex)
 	{
-		$message = '#' . $errno . ' in Class: ' . __CLASS__ . ' and Method: ' . __METHOD__ . ' on line: ' . $errline;
-				
+		$message .= '#' . $errno . ' <strong>' . $errstr . '</strong> in File <strong>' . $errfile . '</strong> on line <strong>' . $errline . '</strong>';
+			
 		echo '<pre>';
 		echo $message;
 		echo '</pre>';
