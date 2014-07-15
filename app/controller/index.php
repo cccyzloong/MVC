@@ -9,6 +9,8 @@
 		{
 			//pre_r(__CLASS__);
 			
+			//this should be merged
+			
 			parent::__construct($args);
 		}
 		
