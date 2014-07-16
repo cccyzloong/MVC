@@ -1,6 +1,6 @@
 <?php
 
-	class Auth extends Model
+	class Auth
 	{
 		public $model;
 		private $_username;
@@ -8,7 +8,7 @@
 		
 		public function __construct($args = FALSE)
 		{
-			//$this->model = parent::__construct();
+			$this->model = new Model();
 			
 			//$user = $this->model->DB->query('SELECT * FROM user')->fetchAll();
 			
@@ -18,13 +18,15 @@
 			}
 			
 			if($this->_username && $this->_password){			
-				pre_r($this->_checkUser());
+				//pre_r($this->_checkUser($this->_username, $this->_password));
 			}
 		}
 		
-		private function _checkUser(){
+		private function _checkUser($username, $password){
 			if($this->_username && $this->_password){
-				return $this->model->DB->query('SELECT * FROM user')->fetchAll();
+				$stmt = $this->model->DB->prepare('SELECT * FROM user WHERE email = ? AND password = ?')->execute(array($this->_username, md5($this->_password))); 
+				
+				return $stmt->fetchAll(); 
 			}
 		}
 	}
