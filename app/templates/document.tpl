@@ -18,6 +18,19 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Controller: {$controller}, action: {$action}
+					
+					<div class="pull-right col-lg-1">
+						<form role="form" method="post" class="form-login">
+							{if !$isLoggedIn}
+								<a href="/login" class="btn btn-xs btn-success form-submit">Login</a>
+							{else}
+								<div class="form-group">
+									<input type="hidden" name="logout" value="1" />
+									<button type="submit" class="btn btn-xs btn-success form-submit">Logout</button>
+								</div>
+							{/if}
+						</form>
+					</div>
 				</div>
 				<div class="panel-body">
 			    	{block name="body"}{/block}
