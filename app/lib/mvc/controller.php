@@ -29,6 +29,7 @@
 			$this->model = class_exists($model) ? new $model($args) : FALSE;
 			
 			$this->_auth = new Auth($this->Post);
+			//$this->_auth->logout();
 			
 			$this->view->smarty->assign('controller', $args['controller']);
 			$this->view->smarty->assign('action', isset($args['action']) ? $args['action'] : FALSE);
