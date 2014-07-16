@@ -2,6 +2,7 @@
 	
 	set_error_handler('errorHandler');
 	spl_autoload_register('autoloadMVC');
+	spl_autoload_register('autoloadMVCLibs');
 	spl_autoload_register('autoloadLibs');
 	
 	function errorHandler($errno, $errstr, $errfile, $errline, $errcontex)
@@ -37,17 +38,25 @@
 		
 		$file = __DIR__ . '/../' . $classSufix . '/' . $className . '.php';
 		
-		if(file_exists($file)){ //echo 'MVC : ' . $file . '<br />';
-			include_once __DIR__ . '/controller.php';
+		if(file_exists($file)){ //echo 'MVC: ' . $file . '<br />';
 			include_once $file;
 		}
 	}
+	
+	function autoloadMVCLibs($class)
+	{		
+		$file = __DIR__ . '/mvc/' . lcfirst($class) . '.php';
 
+		if(file_exists($file)){ //echo 'MVC Lib: ' . $file . '<br />';
+			include_once $file;
+		}
+	}
+	
 	function autoloadLibs($class)
 	{		
 		$file = __DIR__ . '/' . lcfirst($class) . '.php';
 		
-		if(file_exists($file)){ //echo 'Libs : ' . $file  . '<br />';
+		if(file_exists($file)){ //echo 'Libs: ' . $file  . '<br />';
 			include_once $file;
 		}
 	}
