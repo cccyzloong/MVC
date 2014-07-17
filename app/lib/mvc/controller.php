@@ -20,15 +20,19 @@
 			
 			$this->_auth = new Auth($this->Post);
 			
-			if($args['controller'] != 'login' && !$this->_auth->isLoggedIn()){
-				$this->redirect('login');
+			if($args['controller'] != LOGIN_CONTROLLER && !$this->_auth->isLoggedIn()){
+				$this->redirect(LOGIN_CONTROLLER);
+			}
+			
+			if($this->_auth->isLoggedIn() && $args['controller'] == LOGIN_CONTROLLER){
+				$this->redirect(DEFAULT_CONTROLLER);
 			}
 			
 			if(isset($this->Post['logout']) && $this->Post['logout'] && $this->_auth->isLoggedIn()){
 				$this->_auth->logout();
 				
-				if($args['controller'] != 'login'){
-					$this->redirect('login');
+				if($args['controller'] != LOGIN_CONTROLLER){
+					$this->redirect(LOGIN_CONTROLLER);
 				}
 			}
 						
