@@ -1,8 +1,5 @@
 <?php
 
-	/**
-	 * Index controller
-	 */
 	class LoginController extends Controller
 	{
 		public function __construct($args)
@@ -10,7 +7,7 @@
 			parent::__construct($args);
 		}
 		
-		public function run()
+		public function indexAction()
 		{			
 			$this->view->smarty->assign('session', $_SESSION);
 			

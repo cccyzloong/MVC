@@ -1,8 +1,5 @@
 <?php
 
-	/**
-	 * Error controller
-	 */
 	class ErrorController extends Controller
 	{
 		public $controllerExist;
@@ -16,7 +13,7 @@
 			parent::__construct($args);
 		}
 		
-		public function run()
+		public function indexAction()
 		{						
 			$this->view->smarty->assign('controllerExist', $this->controllerExist);
 			$this->view->smarty->assign('actionExist', $this->actionExist);

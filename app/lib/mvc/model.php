@@ -1,8 +1,5 @@
 <?php
 
-	/**
-	 * Model
-	 */
 	class Model extends PDO
 	{
 		public $DB;

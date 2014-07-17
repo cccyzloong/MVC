@@ -2,9 +2,6 @@
 	
 	require_once __DIR__ . '/lib/magics.php';
 	
-	/**
-	 * Bootstrap
-	 */
 	class Bootstrap
 	{
 		private $_request;
@@ -13,28 +10,28 @@
 		{			
 			session_start();
 			
-			$this->loadConfig();
+			$this->_loadConfig();
 			
 			error_reporting(ERROR_TYPE);
 			
-			$this->_request = $this->sortRequest($url);
+			$this->_request = $this->_sortRequest($url);
 		}
 		
 		public function run()
 		{			
 			$controllerClass = ucfirst($this->_request['controller']) . 'Controller';
-			$action = $this->_request['action'];
+			$action = $this->_request['action'] . 'Action';
 			
 			if(!class_exists($controllerClass) || !method_exists($controllerClass, $action)){
 				$controllerClass = ucfirst(ERROR_CONTROLLER) . 'Controller';
-				$action = DEFAULT_ACTION;
+				$action = DEFAULT_ACTION . 'Action';
 			} 
 			
 			$controller = new $controllerClass($this->_request);
 			$controller->$action();
 		}
 		
-		private function sortRequest($request = FALSE)
+		private function _sortRequest($request = FALSE)
 		{
 			if($request){
 				$request = array_filter(explode('/', $request));
@@ -83,7 +80,7 @@
 			return $array;
 		}
 
-		private function loadConfig()
+		private function _loadConfig()
 		{
 			$config = parse_ini_file(__DIR__ . '/config.ini');
 			

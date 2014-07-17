@@ -5,6 +5,8 @@
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		

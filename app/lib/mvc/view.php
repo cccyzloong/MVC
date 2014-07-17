@@ -13,8 +13,8 @@
 			$this->smarty->compile_dir = __DIR__ . '/../../temp/templates_c/';
 			$this->smarty->config_dir = __DIR__ . '/../../temp/configs/';
 			$this->smarty->cache_dir = __DIR__ . '/../../temp/cache/';
-			//$this->smarty->caching = FALSE;
-						
+			
+			//$this->smarty->caching = FALSE;						
 			//$this->smarty->debugging = TRUE;
 		}
 	}
