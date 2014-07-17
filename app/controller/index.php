@@ -6,18 +6,12 @@
 	class IndexController extends Controller
 	{
 		public function __construct($args)
-		{
-			//pre_r(__CLASS__);
-			
-			//this should be merged
-			
+		{			
 			parent::__construct($args);
 		}
 		
 		public function run()
 		{
-			//pre_r(__METHOD__);
-
 			$this->view->smarty->display('index/run.tpl');
 		}
 	}

@@ -14,8 +14,6 @@
 		echo '</pre>';
 		
 		error_log($message);
-		
-		//header('Location: /error');
 	}
 	
 	function pre_r($data = FALSE)

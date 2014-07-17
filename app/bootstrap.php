@@ -10,12 +10,8 @@
 		private $_request;
 		
 		public function __construct($url = FALSE)
-		{
-			//pre_r(__CLASS__);
-			
+		{			
 			session_start();
-			
-			//$_SESSION['user'] = 'Davor Beslic';
 			
 			$this->loadConfig();
 			
@@ -25,9 +21,7 @@
 		}
 		
 		public function run()
-		{
-			//pre_r(__METHOD__);
-			
+		{			
 			$controllerClass = ucfirst($this->_request['controller']) . 'Controller';
 			$action = $this->_request['action'];
 			
@@ -36,7 +30,7 @@
 				$action = DEFAULT_ACTION;
 			} 
 			
-			$controller = new $controllerClass($this->_request);		
+			$controller = new $controllerClass($this->_request);
 			$controller->$action();
 		}
 		

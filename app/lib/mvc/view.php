@@ -5,9 +5,7 @@
 		public $smarty;
 		
 		public function __construct($args)
-		{
-			//pre_r(__CLASS__);
-			
+		{			
 			include_once __DIR__ . '/../Smarty/libs/Smarty.class.php';
 			
 			$this->smarty = new Smarty();
