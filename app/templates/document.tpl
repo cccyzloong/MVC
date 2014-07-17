@@ -15,27 +15,27 @@
 	
 	<body>
 		<div class="container-fluid m-top-15">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Controller: {$controller}, action: {$action}
-					
-					<div class="pull-right col-lg-1">
-						<form role="form" method="post" class="form-login">
-							{if !$isLoggedIn}
-								<a href="/login" class="btn btn-xs btn-success form-submit">Login</a>
-							{else}
+			{if $controller != $smarty.const.LOGIN_CONTROLLER}
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Controller: {$controller}, action: {$action}
+											
+						<div class="pull-right">
+							<form role="form" method="post" class="form-login">
 								<div class="form-group">
 									<input type="hidden" name="logout" value="1" />
-									<button type="submit" class="btn btn-xs btn-success form-submit">Logout</button>
+									<button type="submit" title="Logout" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-off"></span></button>
 								</div>
-							{/if}
-						</form>
+							</form>
+						</div>					
 					</div>
+					<div class="panel-body">
+				    	{block name="body"}{/block}
+					</div>			
 				</div>
-				<div class="panel-body">
-			    	{block name="body"}{/block}
-				</div>
-			</div>
+			{else}
+				{block name="body"}{/block}
+			{/if}
 		</div>
 	</body>
 </html>

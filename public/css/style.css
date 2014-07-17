@@ -1,5 +1,5 @@
 body{
-	background-color:#6FAF66;
+	background-color:#F9F9F9;
 }
 
 .m-top-5{margin-top:5px;}
@@ -8,6 +8,17 @@ body{
 .m-top-20{margin-top:20px;}
 .m-top-25{margin-top:25px;}
 .m-top-30{margin-top:30px;}
+
+.m-top-5p{margin-top:5%;}
+.m-top-10p{margin-top:10%;}
+.m-top-15p{margin-top:15%;}
+.m-top-20p{margin-top:20%;}
+.m-top-25p{margin-top:25%;}
+.m-top-30p{margin-top:30%;}
+.m-top-35p{margin-top:35%;}
+.m-top-40p{margin-top:40%;}
+.m-top-45p{margin-top:45%;}
+.m-top-50p{margin-top:50%;}
 
 .p-top-5{padding-top:5px;}
 .p-top-10{padding-top:10px;}
