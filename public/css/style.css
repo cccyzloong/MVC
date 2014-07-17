@@ -1,5 +1,6 @@
 body{
-	background-color:#F9F9F9;
+	background:url('/media/images/layout/rovinj.jpg') 0 0 transparent no-repeat;
+	background-size:cover;
 }
 
 .m-top-5{margin-top:5px;}
