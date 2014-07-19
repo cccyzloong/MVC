@@ -14,6 +14,9 @@
 			$this->smarty->config_dir = __DIR__ . '/../../temp/configs/';
 			$this->smarty->cache_dir = __DIR__ . '/../../temp/cache/';
 			
+			//$this->smarty->compile_check = FALSE;
+			//$this->smarty->force_compile = TRUE;
+			
 			//$this->smarty->caching = FALSE;						
 			//$this->smarty->debugging = TRUE;
 		}

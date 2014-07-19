@@ -4,3 +4,4 @@ logs
 app/temp
 app/controller/jira.php
 app/templates/jira
+public/theme

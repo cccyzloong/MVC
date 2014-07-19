@@ -11,7 +11,7 @@
 		{			
 			$this->view->smarty->assign('session', $_SESSION);
 			
-			$this->view->smarty->display('login/run.tpl');
+			$this->view->smarty->display('login/index.tpl');
 		}
 	}
 	

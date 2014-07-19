@@ -2,8 +2,8 @@
 
 	class Controller
 	{
-		public $Get;
-		public $Post;
+		public $GET;
+		public $POST;
 		public $model;
 		public $view;		
 		private $_auth;
@@ -18,7 +18,7 @@
 
 			$this->model = class_exists($model) ? new $model($args) : FALSE;
 			
-			$this->_auth = new Auth($this->Post);
+			$this->_auth = new Auth($this->POST);
 			
 			if($args['controller'] != LOGIN_CONTROLLER && !$this->_auth->isLoggedIn()){
 				$this->redirect(LOGIN_CONTROLLER);
@@ -28,7 +28,7 @@
 				$this->redirect('/');
 			}
 			
-			if(isset($this->Post['logout']) && $this->Post['logout'] && $this->_auth->isLoggedIn()){
+			if(isset($this->POST['logout']) && $this->POST['logout'] && $this->_auth->isLoggedIn()){
 				$this->_auth->logout();
 				
 				if($args['controller'] != LOGIN_CONTROLLER){
@@ -39,19 +39,19 @@
 			$this->view->smarty->assign('isLoggedIn', $this->_auth->isLoggedIn());
 			$this->view->smarty->assign('controller', $args['controller']);
 			$this->view->smarty->assign('action', isset($args['action']) ? $args['action'] : FALSE);
-			$this->view->smarty->assign('get', $this->Get);
-			$this->view->smarty->assign('post', $this->Post);
+			$this->view->smarty->assign('get', $this->GET);
+			$this->view->smarty->assign('post', $this->POST);
 		}
 		
 		private function _setGetAndPost($args)
 		{
 			if(isset($args['get'])){
-				$this->Get = $args['get'];
+				$this->GET = $args['get'];
 				unset($args['get']);
 			}
 			
 			if(isset($args['post'])){
-				$this->Post = $args['post'];
+				$this->POST = $args['post'];
 				unset($args['post']);
 			}
 		}

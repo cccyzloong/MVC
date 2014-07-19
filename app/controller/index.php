@@ -9,7 +9,7 @@
 		
 		public function indexAction()
 		{
-			$this->view->smarty->display('index/run.tpl');
+			$this->view->smarty->display('index/index.tpl');
 		}
 	}
 	

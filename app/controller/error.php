@@ -18,7 +18,7 @@
 			$this->view->smarty->assign('controllerExist', $this->controllerExist);
 			$this->view->smarty->assign('actionExist', $this->actionExist);
 			
-			$this->view->smarty->display('error/run.tpl');
+			$this->view->smarty->display('error/index.tpl');
 		}
 	}
 	
