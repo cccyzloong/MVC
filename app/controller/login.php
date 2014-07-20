@@ -8,10 +8,12 @@
 		}
 		
 		public function indexAction()
-		{			
+		{
+			$this->view->setMetaTitle('Login');
+									
 			$this->view->smarty->assign('session', $_SESSION);
 			
-			$this->view->smarty->display('login/index_2.tpl');
+			$this->view->smarty->display('login/index.tpl');
 		}
 	}
 	

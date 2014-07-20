@@ -3,6 +3,7 @@
 	class View
 	{
 		public $smarty;
+		public $meta;
 		
 		public function __construct($args)
 		{			
@@ -19,5 +20,14 @@
 			
 			//$this->smarty->caching = FALSE;						
 			//$this->smarty->debugging = TRUE;
+		}
+		
+		public function setMetaTitle($title = FALSE)
+		{
+			if($title && !empty($title)){
+				$this->meta['title'] = $title;
+				
+				$this->smarty->assign('metaTitle', $this->meta['title']);
+			}
 		}
 	}
