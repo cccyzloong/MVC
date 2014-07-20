@@ -57,22 +57,27 @@
 						
 						if($hasPassword !== FALSE){						
 							return $user;
-						} else {
-							$this->error = 'Sie haben falsche Zugangsdaten eingegeben! Bitte versuchen Sie es erneut. ';
+						} else {							
+							$this->model->DB->prepare('UPDATE user SET login_fails = login_fails + 1, login_fails_sum = login_fails_sum + 1, login_fail_ip = ? WHERE email = ?')->execute(array($_SERVER['REMOTE_ADDR'], $username));
 							
-							$this->model->DB->prepare('UPDATE user SET login_fails = login_fails + 1')->execute(array($username, $hash));
-							
-							$stmt = $this->model->DB->prepare('SELECT login_fails FROM user WHERE email = ?');
+							$stmt = $this->model->DB->prepare('SELECT login_fails, status, blocked_until FROM user WHERE email = ?');
 							$stmt->execute(array($username));
-							$loginFails = $stmt->fetch();
-							$loginFails = $loginFails['login_fails'];
+							$loginFailData = $stmt->fetch();
 							
-							$this->error .= 'Sie haben noch ' . (MAX_LOGIN_FAILS - $loginFails) . ' Versuch(e)!';
+							$status = $loginFailData['status'];
+							$loginFails = $loginFailData['login_fails'];
+							$blockedUntil = $loginFailData['blocked_until'];
 							
-							if(MAX_LOGIN_FAILS <= $loginFails){
+							if($status == 2){
+								$this->error = 'Dieser Benutzerkonto wurde gesperrt, bis: ' . date('d.m.Y H:i:s', $blockedUntil);
+							} else if($status == 1){
+								$this->error = 'Sie haben falsche Zugangsdaten eingegeben! Bitte versuchen Sie es erneut. Sie haben noch ' . (MAX_LOGIN_FAILS - $loginFails) . ' Versuch(e)!';	
+							}
+							
+							if(MAX_LOGIN_FAILS <= $loginFails && $status == 1){
 								$blockedUntil = strtotime('+1 day');
 								
-								$this->model->DB->prepare('UPDATE user SET status = ? AND blocked_until = ? WHERE email = ?')->execute(array('2', $blockedUntil, $username));
+								$this->model->DB->prepare('UPDATE user SET status = ?, blocked_until = ? WHERE email = ?')->execute(array(2, $blockedUntil, $username));
 								
 								$this->error = 'Dieser Benutzerkonto wurde gesperrt, bis: ' . date('d.m.Y H:i:s', $blockedUntil);
 							}
@@ -81,7 +86,7 @@
 						}
 					} else {
 						$this->error = 'Benutzerkonto exsistiert nicht!';
-											
+
 						return FALSE;
 					}
 				}
@@ -110,7 +115,7 @@
 			$_SESSION['userID'] = $user['id'];
 			$_SESSION['loginTime'] = time();
 			
-			$this->model->DB->prepare('UPDATE user SET last_login = ?, ip = ? WHERE id = ?')->execute(array($_SESSION['loginTime'], $_SERVER['REMOTE_ADDR'], $_SESSION['userID']));
+			$this->model->DB->prepare('UPDATE user SET last_login = ?, login_ip = ?, login_fails = ? WHERE id = ?')->execute(array($_SESSION['loginTime'], $_SERVER['REMOTE_ADDR'], 0, $_SESSION['userID']));
 		}
 		
 		public function logout()

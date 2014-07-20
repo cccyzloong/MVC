@@ -9,7 +9,7 @@
 		private $_auth;
 		
 		public function __construct($args)
-		{			
+		{
 			$this->_setGetAndPost($args);
 			
 			$this->view = new View($args);
