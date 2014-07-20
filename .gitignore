@@ -4,4 +4,7 @@ logs
 app/temp
 app/controller/jira.php
 app/templates/jira
+public/raw_theme
 public/theme
+app/templates/_main/backend.tpl
+app/templates/login/index.tpl
