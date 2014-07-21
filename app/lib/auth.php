@@ -33,15 +33,19 @@
 				$stmt->execute(array($username, $hash));
 				$user = $stmt->fetch();
 
-				if($user && !empty($user)){
+				if($user && !empty($user)){										
 					if($user['status'] == 0){
 						$this->error = 'Benutzerkonto wurde nicht aktiviert.';
 						
 						return FALSE;
-					} else if($user['status'] == 2){
+					} else if($user['status'] == 2 && time() < $user['blocked_until']){
 						$this->error = 'Dieser Benutzerkonto wurde gesperrt, bis: ' . date('d.m.Y H:i:s', $user['blocked_until']);
 						
 						return FALSE;
+					} else if($user['status'] == 2 && time() >= $user['blocked_until']){
+						$this->model->DB->prepare('UPDATE user SET status = ?, login_fails = ?, blocked_until = ? WHERE email = ?')->execute(array(1, 0, 0, $username));
+						
+						return $user;
 					} else {
 						return $user;
 					}
@@ -68,14 +72,20 @@
 							$loginFails = $loginFailData['login_fails'];
 							$blockedUntil = $loginFailData['blocked_until'];
 							
-							if($status == 2){
+							$trys = MAX_LOGIN_FAILS - $loginFails;
+							
+							if($status == 2 && time() < $blockedUntil){
 								$this->error = 'Dieser Benutzerkonto wurde gesperrt, bis: ' . date('d.m.Y H:i:s', $blockedUntil);
-							} else if($status == 1){
-								$this->error = 'Sie haben falsche Zugangsdaten eingegeben! Bitte versuchen Sie es erneut. Sie haben noch ' . (MAX_LOGIN_FAILS - $loginFails) . ' Versuch(e)!';	
+							} else if($status == 1 || $status == 2 && time() >= $blockedUntil){
+								$this->error = 'Sie haben falsche Zugangsdaten eingegeben! Bitte versuchen Sie es erneut.';
+								
+								if($trys >= 0){
+									//$this->error .= 'Sie haben noch ' . $trys . ' Versuch(e)!';
+								}
 							}
 							
 							if(MAX_LOGIN_FAILS <= $loginFails && $status == 1){
-								$blockedUntil = strtotime('+1 day');
+								$blockedUntil = strtotime('+1 minute');
 								
 								$this->model->DB->prepare('UPDATE user SET status = ?, blocked_until = ? WHERE email = ?')->execute(array(2, $blockedUntil, $username));
 								
@@ -85,7 +95,7 @@
 							return FALSE;
 						}
 					} else {
-						$this->error = 'Benutzerkonto exsistiert nicht!';
+						$this->error = 'Sie haben falsche Zugangsdaten eingegeben! Bitte versuchen Sie es erneut.';
 
 						return FALSE;
 					}
