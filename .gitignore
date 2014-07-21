@@ -8,3 +8,9 @@ public/raw_theme
 public/theme
 app/templates/_main/backend.tpl
 app/templates/login/index.tpl
+app/controller/dashboard.php
+app/templates/dashboard
+app/templates/_main/navbar_right.tpl
+app/controller/user.php
+app/templates/user
+app/templates/_main/includes

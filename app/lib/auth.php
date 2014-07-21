@@ -84,7 +84,7 @@
 								
 								return $user;
 							} else {
-								$this->model->DB->prepare('UPDATE user SET status = ?, login_fails = ?, login_fails_sum = ?, login_fail_ip = ?, blocked_until = ? WHERE id = ?')->execute(array(1, 1, 1, $ip, 0, $id));
+								$this->model->DB->prepare('UPDATE user SET status = ?, login_fails = ?, login_fails_sum = login_fails_sum + 1, login_fail_ip = ?, blocked_until = ? WHERE id = ?')->execute(array(1, 1, $ip, 0, $id));
 								
 								$this->error = 'AUTH_WRONG_LOGIN_DATA';
 								
