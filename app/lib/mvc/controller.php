@@ -5,7 +5,7 @@
 		public $GET;
 		public $POST;
 		public $model;
-		public $view;		
+		public $view;
 		private $_auth;
 		
 		public function __construct($args)

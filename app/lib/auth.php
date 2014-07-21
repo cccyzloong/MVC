@@ -11,94 +11,113 @@
 		{
 			$this->model = new Model();
 			
-			if($args){
-				$this->_username = isset($args['username']) && !empty($args['username']) ? $args['username'] : FALSE;
-				$this->_password = isset($args['password']) && !empty($args['password']) ? $args['password'] : FALSE;
-			}
+			$this->_username = isset($args['username']) && !empty($args['username']) ? $args['username'] : FALSE;
+			$this->_password = isset($args['password']) && !empty($args['password']) ? $args['password'] : FALSE;
 			
-			if(!$this->isLoggedIn() && ($this->_username && $this->_password)){
-				$user = $this->_checkUser($this->_username, $this->_password);
+			if(!$this->isLoggedIn() && ($this->_username != FALSE && $this->_password != FALSE)){
+				$user = $this->_getUserAndHandleAuth($this->_username, $this->_password);
 				
-				if($user){
+				if($user != FALSE){
 					$this->_login($user);
-				}				
-			}			
+				}
+			}
 		}
 		
-		private function _checkUser($username, $password){
-			if($username && $password){
-				$hash = md5($password);
-					
-				$stmt = $this->model->DB->prepare('SELECT * FROM user WHERE email = ? AND password = ?');
-				$stmt->execute(array($username, $hash));
-				$user = $stmt->fetch();
-
-				if($user && !empty($user)){										
-					if($user['status'] == 0){
-						$this->error = 'Benutzerkonto wurde nicht aktiviert.';
+		private function _getUserAndHandleAuth($username, $password){		
+			$stmt = $this->model->DB->prepare('SELECT * FROM user WHERE email = ?');
+			$stmt->execute(array($username));
+			$user = $stmt->fetch();
+			
+			if($user && !empty($user)){
+				$id = $user['id'];
+				$loginFails = $user['login_fails'];
+				$status = $user['status'];
+				$blockedUntil = $user['blocked_until'];
+				$hash = $user['password'];
+				
+				$ip = $_SERVER['REMOTE_ADDR'];
+				$timeStamp = time();
+				$blockUntil = strtotime('+' . USER_BLOCKED_TIME . ' seconds', $timeStamp);
+				
+				switch ($status) {
+					case 0:
+						
+						if($this->_checkPassword($password, $user['password'])){
+							$this->error = 'AUTH_ACCOUNT_NOT_ACTIVATED';
+						} else {
+							$this->error = 'AUTH_WRONG_LOGIN_DATA';
+						}
 						
 						return FALSE;
-					} else if($user['status'] == 2 && time() < $user['blocked_until']){
-						$this->error = 'Dieser Benutzerkonto wurde gesperrt, bis: ' . date('d.m.Y H:i:s', $user['blocked_until']);
 						
-						return FALSE;
-					} else if($user['status'] == 2 && time() >= $user['blocked_until']){
-						$this->model->DB->prepare('UPDATE user SET status = ?, login_fails = ?, blocked_until = ? WHERE email = ?')->execute(array(1, 0, 0, $username));
-						
-						return $user;
-					} else {
-						return $user;
-					}
-				} else {
-					$stmt = $this->model->DB->prepare('SELECT email FROM user WHERE email = ?');
-					$stmt->execute(array($username));
-					$hasUsername = $stmt->fetch();
+						break;
 					
-					if($hasUsername !== FALSE){
-						$stmt = $this->model->DB->prepare('SELECT password FROM user WHERE password = ?');
-						$stmt->execute(array($hash));
-						$hasPassword = $stmt->fetch();
+					case 1:
 						
-						if($hasPassword !== FALSE){						
-							return $user;
-						} else {							
-							$this->model->DB->prepare('UPDATE user SET login_fails = login_fails + 1, login_fails_sum = login_fails_sum + 1, login_fail_ip = ? WHERE email = ?')->execute(array($_SERVER['REMOTE_ADDR'], $username));
-							
-							$stmt = $this->model->DB->prepare('SELECT login_fails, status, blocked_until FROM user WHERE email = ?');
-							$stmt->execute(array($username));
-							$loginFailData = $stmt->fetch();
-							
-							$status = $loginFailData['status'];
-							$loginFails = $loginFailData['login_fails'];
-							$blockedUntil = $loginFailData['blocked_until'];
-							
-							$trys = MAX_LOGIN_FAILS - $loginFails;
-							
-							if($status == 2 && time() < $blockedUntil){
-								$this->error = 'Dieser Benutzerkonto wurde gesperrt, bis: ' . date('d.m.Y H:i:s', $blockedUntil);
-							} else if($status == 1 || $status == 2 && time() >= $blockedUntil){
-								$this->error = 'Sie haben falsche Zugangsdaten eingegeben! Bitte versuchen Sie es erneut.';
+						if((MAX_LOGIN_FAILS - $loginFails) > 1){
+							if($this->_checkPassword($password, $hash)){
+								$this->model->DB->prepare('UPDATE user SET last_login = ?, login_ip = ?, login_fails = ?, login_fail_ip = ? WHERE id = ?')->execute(array($timeStamp, $ip, 0, '', $id));
 								
-								if($trys >= 0){
-									//$this->error .= 'Sie haben noch ' . $trys . ' Versuch(e)!';
-								}
-							}
+								return $user;
+							} else {
+								$this->model->DB->prepare('UPDATE user SET login_fails = login_fails + 1, login_fails_sum = login_fails_sum + 1, login_fail_ip = ? WHERE id = ?')->execute(array($ip, $id));
+								
+								$this->error = 'AUTH_WRONG_LOGIN_DATA';
+								
+								return FALSE;
+							}							
+						} else {
+							$this->model->DB->prepare('UPDATE user SET status = ?, blocked_until = ?, login_fail_ip = ?, login_fails = login_fails + 1, login_fails_sum = login_fails_sum + 1 WHERE id = ?')->execute(array(2, $blockUntil, $ip, $id));
 							
-							if(MAX_LOGIN_FAILS <= $loginFails && $status == 1){
-								$blockedUntil = strtotime('+1 minute');
-								
-								$this->model->DB->prepare('UPDATE user SET status = ?, blocked_until = ? WHERE email = ?')->execute(array(2, $blockedUntil, $username));
-								
-								$this->error = 'Dieser Benutzerkonto wurde gesperrt, bis: ' . date('d.m.Y H:i:s', $blockedUntil);
-							}
+							$this->error = 'AUTH_ACCOUNT_BLOCKED ' . date('d.m.Y H:i:s', $blockUntil);
 							
 							return FALSE;
 						}
-					} else {
-						$this->error = 'Sie haben falsche Zugangsdaten eingegeben! Bitte versuchen Sie es erneut.';
-
+						
+						break;
+					
+					case 2:
+						
+						if($timeStamp >= $blockedUntil){							
+							if($this->_checkPassword($password, $hash)){
+								$this->model->DB->prepare('UPDATE user SET status = ?, last_login = ?, login_ip = ?, login_fails = ?, login_fail_ip = ?, blocked_until = ? WHERE id = ?')->execute(array(1, $timeStamp, $ip, 0, '', 0, $id));
+								
+								return $user;
+							} else {
+								$this->model->DB->prepare('UPDATE user SET status = ?, login_fails = ?, login_fails_sum = ?, login_fail_ip = ?, blocked_until = ? WHERE id = ?')->execute(array(1, 1, 1, $ip, 0, $id));
+								
+								$this->error = 'AUTH_WRONG_LOGIN_DATA';
+								
+								return FALSE;	
+							}							
+						} else {							
+							$this->error = 'AUTH_ACCOUNT_BLOCKED ' . date('d.m.Y H:i:s', $blockedUntil);
+							
+							return FALSE;
+						}
+						
+						break;
+					
+					default:
 						return FALSE;
-					}
+						break;
+				}
+			} else {
+				$this->error = 'AUTH_WRONG_LOGIN_DATA';
+				
+				return FALSE;
+			}
+		}
+		
+		private function _checkPassword($password, $hash = FALSE)
+		{
+			if(!empty($hash)){
+				$hashedPassword = md5($password);
+				
+				if($hashedPassword == $hash){
+					return TRUE;
+				} else {
+					return FALSE;
 				}
 			} else {
 				return FALSE;
@@ -117,15 +136,15 @@
 				$_SESSION['loginTime'] = time();
 				
 				return TRUE;
+			} else {
+				return FALSE;
 			}
 		}
 
 		private function _login($user)
 		{
 			$_SESSION['userID'] = $user['id'];
-			$_SESSION['loginTime'] = time();
-			
-			$this->model->DB->prepare('UPDATE user SET last_login = ?, login_ip = ?, login_fails = ? WHERE id = ?')->execute(array($_SESSION['loginTime'], $_SERVER['REMOTE_ADDR'], 0, $_SESSION['userID']));
+			$_SESSION['loginTime'] = $user['last_login'];
 		}
 		
 		public function logout()
