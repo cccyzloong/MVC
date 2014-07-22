@@ -8,10 +8,8 @@
 	function errorHandler($errno, $errstr, $errfile, $errline, $errcontex)
 	{
 		$message = '#' . $errno . ' <strong>' . $errstr . '</strong> in File <strong>' . $errfile . '</strong> on line <strong>' . $errline . '</strong>';
-			
-		echo '<pre>';
-		echo $message;
-		echo '</pre>';
+		
+		echo $message . "<br />";
 		
 		error_log($message);
 	}

@@ -14,3 +14,4 @@ app/templates/_main/navbar_right.tpl
 app/controller/user.php
 app/templates/user
 app/templates/_main/includes
+app/model/user.php
