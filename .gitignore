@@ -15,3 +15,9 @@ app/controller/user.php
 app/templates/user
 app/templates/_main/includes
 app/model/user.php
+app/view/_main/includes
+app/view/_main/backend.tpl
+app/view/_main/backend.tpl
+app/view/dashboard
+app/view/login/index.tpl
+app/view/user
