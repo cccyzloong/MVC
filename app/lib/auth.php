@@ -109,16 +109,16 @@
 			}
 		}
 		
-		private function _checkPassword($password, $hash = FALSE)
+		static function _bcrypt($password, $rounds='08')
 		{
-			if(!empty($hash)){
-				$hashedPassword = md5($password);
-				
-				if($hashedPassword == $hash){
-					return TRUE;
-				} else {
-					return FALSE;
-				}
+		    $salt = substr(str_shuffle('./0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ), 0, 22);
+		    return crypt($password, '$2a$' . $rounds . '$' . $salt);
+		}
+		
+		static function _checkPassword($password, $hash)
+		{
+			if(crypt($password, $hash) == $hash){
+				return TRUE;
 			} else {
 				return FALSE;
 			}
