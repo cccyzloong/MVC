@@ -22,3 +22,4 @@ app/view/dashboard
 app/view/login/index.tpl
 app/view/user
 app/view/jira
+/NetBeansMeta/nbproject/private/
