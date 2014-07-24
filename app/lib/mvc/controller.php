@@ -39,7 +39,7 @@
 			if($this->_auth->error){
 				$this->view->smarty->assign('alert', $this->_auth->error);
 			}
-				
+			
 			$this->view->smarty->assign('isLoggedIn', $this->_auth->isLoggedIn());
 			$this->view->smarty->assign('controller', $args['controller']);
 			$this->view->smarty->assign('action', isset($args['action']) ? $args['action'] : FALSE);
