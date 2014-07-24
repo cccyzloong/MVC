@@ -21,3 +21,4 @@ app/view/_main/backend.tpl
 app/view/dashboard
 app/view/login/index.tpl
 app/view/user
+app/view/jira

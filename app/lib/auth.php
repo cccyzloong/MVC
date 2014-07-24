@@ -23,7 +23,7 @@
 			}
 		}
 		
-		private function _getUserAndHandleAuth($username, $password){		
+		private function _getUserAndHandleAuth($username, $password){
 			$stmt = $this->model->DB->prepare('SELECT * FROM user WHERE email = ?');
 			$stmt->execute(array($username));
 			$user = $stmt->fetch();
