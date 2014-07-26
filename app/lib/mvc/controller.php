@@ -24,7 +24,7 @@ class Controller {
         }
 
         if ($this->_auth->isLoggedIn() && $args['controller'] == LOGIN_CONTROLLER) {
-            $this->redirect('/');
+            $this->redirect(DEFAULT_CONTROLLER);
         }
 
         if (isset($this->POST['logout']) && $this->POST['logout'] && $this->_auth->isLoggedIn()) {
