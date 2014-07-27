@@ -18,15 +18,9 @@ class Controller {
         $this->model = class_exists($model) ? new $model($args) : FALSE;
 
         $this->_auth = new Auth($this->POST);
-
-        if ($args['controller'] != LOGIN_CONTROLLER && !$this->_auth->isLoggedIn()) {
-            $this->redirect(LOGIN_CONTROLLER);
-        }
-
-        if ($this->_auth->isLoggedIn() && $args['controller'] == LOGIN_CONTROLLER) {
-            $this->redirect(DEFAULT_CONTROLLER);
-        }
-
+        
+        $this->_checkLoginAndRedirect($args, $this->_auth->isLoggedIn());
+        
         if (isset($this->POST['logout']) && $this->POST['logout'] && $this->_auth->isLoggedIn()) {
             $this->_auth->logout();
 
@@ -55,6 +49,26 @@ class Controller {
         if (isset($args['post'])) {
             $this->POST = $args['post'];
             unset($args['post']);
+        }
+    }
+
+    private function _checkLoginAndRedirect($args, $isLoggedIn = FALSE) {
+        switch ($isLoggedIn) {
+            case TRUE:
+                if ($args['controller'] == LOGIN_CONTROLLER) {
+                    $this->redirect(DEFAULT_CONTROLLER);
+                }
+                break;
+                
+            case FALSE:
+                if ($args['controller'] != LOGIN_CONTROLLER) {
+                    $this->redirect(LOGIN_CONTROLLER);
+                }
+                break;
+                
+            default:
+                $this->redirect(LOGIN_CONTROLLER);
+                break;
         }
     }
 

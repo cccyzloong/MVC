@@ -57,6 +57,8 @@ class Auth {
                         if ($this->_checkPassword($password, $hash)) {
                             $this->model->DB->prepare('UPDATE user SET last_login = ?, login_ip = ?, login_fails = ?, login_fail_ip = ? WHERE id = ?')->execute(array($timeStamp, $ip, 0, '', $id));
 
+                            $user['last_login'] = $timeStamp;
+
                             return $user;
                         } else {
                             $this->model->DB->prepare('UPDATE user SET login_fails = login_fails + 1, login_fails_sum = login_fails_sum + 1, login_fail_ip = ? WHERE id = ?')->execute(array($ip, $id));
@@ -122,15 +124,13 @@ class Auth {
     }
 
     public function isLoggedIn() {
-        if (!isset($_SESSION['loggedUser']) || !isset($_SESSION['loggedUser']['loginTime']) && (time() - $_SESSION['loggedUser']['loginTime']) > LOGIN_EXPIRE) {
-            if (isset($_SESSION['loggedUser'])) {
-                unset($_SESSION['loggedUser']);
-            }
-
+        if ((isset($_SESSION['loggedUser']) && isset($_SESSION['loggedUser']['loginTime'])) && ((time() - $_SESSION['loggedUser']['loginTime'])) > LOGIN_EXPIRE) {
+            unset($_SESSION['loggedUser']);
+            
             return FALSE;
-        } else if (isset($_SESSION['loggedUser']['loginTime']) && (time() - $_SESSION['loggedUser']['loginTime']) <= LOGIN_EXPIRE) {
+        } else if ((isset($_SESSION['loggedUser']) && isset($_SESSION['loggedUser']['loginTime'])) && ((time() - $_SESSION['loggedUser']['loginTime'])) <= LOGIN_EXPIRE) {
             $_SESSION['loggedUser']['loginTime'] = time();
-
+            
             return TRUE;
         } else {
             return FALSE;
@@ -140,7 +140,7 @@ class Auth {
     private function _login($user) {
         $_SESSION['loggedUser'] = $user;
         $_SESSION['loggedUser']['loginTime'] = $user['last_login'];
-        
+
         unset($_SESSION['loggedUser']['password']);
     }
 
