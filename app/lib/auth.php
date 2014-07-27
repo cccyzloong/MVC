@@ -23,7 +23,7 @@ class Auth {
     }
 
     private function _getUserAndHandleAuth($username, $password) {
-        $stmt = $this->model->DB->prepare('SELECT * FROM user WHERE email = ?');
+        $stmt = $this->model->DB->prepare('SELECT * FROM user AS u JOIN user_personal_data AS upd ON upd.user = u.id WHERE email = ?');
         $stmt->execute(array($username));
         $user = $stmt->fetch();
 
@@ -122,14 +122,14 @@ class Auth {
     }
 
     public function isLoggedIn() {
-        if (!isset($_SESSION['loginTime']) || isset($_SESSION['loginTime']) && (time() - $_SESSION['loginTime']) > LOGIN_EXPIRE) {
-            if (isset($_SESSION['userID']) && isset($_SESSION['loginTime'])) {
-                unset($_SESSION['userID'], $_SESSION['loginTime']);
+        if (!isset($_SESSION['loggedUser']) || !isset($_SESSION['loggedUser']['loginTime']) && (time() - $_SESSION['loggedUser']['loginTime']) > LOGIN_EXPIRE) {
+            if (isset($_SESSION['loggedUser'])) {
+                unset($_SESSION['loggedUser']);
             }
 
             return FALSE;
-        } else if (isset($_SESSION['loginTime']) && (time() - $_SESSION['loginTime']) <= LOGIN_EXPIRE) {
-            $_SESSION['loginTime'] = time();
+        } else if (isset($_SESSION['loggedUser']['loginTime']) && (time() - $_SESSION['loggedUser']['loginTime']) <= LOGIN_EXPIRE) {
+            $_SESSION['loggedUser']['loginTime'] = time();
 
             return TRUE;
         } else {
@@ -138,13 +138,15 @@ class Auth {
     }
 
     private function _login($user) {
-        $_SESSION['userID'] = $user['id'];
-        $_SESSION['loginTime'] = $user['last_login'];
+        $_SESSION['loggedUser'] = $user;
+        $_SESSION['loggedUser']['loginTime'] = $user['last_login'];
+        
+        unset($_SESSION['loggedUser']['password']);
     }
 
     public function logout() {
         if ($this->isLoggedIn()) {
-            unset($_SESSION['userID'], $_SESSION['loginTime']);
+            unset($_SESSION['loggedUser']);
         }
     }
 
