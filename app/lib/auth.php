@@ -53,7 +53,7 @@ class Auth {
 
                 case 1:
 
-                    if ((MAX_LOGIN_FAILS - $loginFails) > 1) {
+                    if ((MAX_LOGIN_FAILS - $loginFails) > 0) {
                         if ($this->_checkPassword($password, $hash)) {
                             $this->model->DB->prepare('UPDATE user SET last_login = ?, login_ip = ?, login_fails = ?, login_fail_ip = ? WHERE id = ?')->execute(array($timeStamp, $ip, 0, '', $id));
 
@@ -126,11 +126,11 @@ class Auth {
     public function isLoggedIn() {
         if ((isset($_SESSION['loggedUser']) && isset($_SESSION['loggedUser']['loginTime'])) && ((time() - $_SESSION['loggedUser']['loginTime'])) > LOGIN_EXPIRE) {
             unset($_SESSION['loggedUser']);
-            
+
             return FALSE;
         } else if ((isset($_SESSION['loggedUser']) && isset($_SESSION['loggedUser']['loginTime'])) && ((time() - $_SESSION['loggedUser']['loginTime'])) <= LOGIN_EXPIRE) {
             $_SESSION['loggedUser']['loginTime'] = time();
-            
+
             return TRUE;
         } else {
             return FALSE;
