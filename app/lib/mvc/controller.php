@@ -25,8 +25,6 @@ class Controller {
             $this->_auth->logout();
         }
 
-        //$this->checkLoginAndRedirect($args, $this->_auth->isLoggedIn());
-
         if ($this->_auth->error) {
             $this->view->smarty->assign('alert', $this->_auth->error);
         }
