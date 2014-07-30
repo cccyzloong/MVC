@@ -17,3 +17,8 @@ public/raw_theme
 public/theme
 /NetBeansMeta/nbproject/private/
 /NetBeansMeta/
+/app/controller/booking.php
+/app/model/booking.php
+/app/controller/reservation.php
+/app/view/reservation/
+/app/model/reservation.php
