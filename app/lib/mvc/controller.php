@@ -6,66 +6,64 @@ class Controller {
     public $POST;
     public $model;
     public $view;
+    public $args;
     private $_auth;
 
     public function __construct($args) {
-        $this->_setGetAndPost($args);
+        $this->args = $args;
+        
+        $this->_setGetAndPost();
 
-        $this->view = new View($args);
+        $this->view = new View($this->args);
 
-        $model = ucfirst($args['controller']) . 'Model';
-
-        $this->model = class_exists($model) ? new $model($args) : FALSE;
+        $model = ucfirst($this->args['controller']) . 'Model';
+        $this->model = class_exists($model) ? new $model($this->args) : FALSE;
 
         $this->_auth = new Auth($this->POST);
-        
-        $this->_checkLoginAndRedirect($args, $this->_auth->isLoggedIn());
-        
+
         if (isset($this->POST['logout']) && $this->POST['logout'] && $this->_auth->isLoggedIn()) {
             $this->_auth->logout();
-
-            if ($args['controller'] != LOGIN_CONTROLLER) {
-                $this->redirect(LOGIN_CONTROLLER);
-            }
         }
+
+        //$this->checkLoginAndRedirect($args, $this->_auth->isLoggedIn());
 
         if ($this->_auth->error) {
             $this->view->smarty->assign('alert', $this->_auth->error);
         }
 
         $this->view->smarty->assign('isLoggedIn', $this->_auth->isLoggedIn());
-        $this->view->smarty->assign('controller', $args['controller']);
-        $this->view->smarty->assign('action', isset($args['action']) ? $args['action'] : FALSE);
+        $this->view->smarty->assign('controller', $this->args['controller']);
+        $this->view->smarty->assign('action', isset($this->args['action']) ? $this->args['action'] : FALSE);
         $this->view->smarty->assign('get', $this->GET);
         $this->view->smarty->assign('post', $this->POST);
     }
 
-    private function _setGetAndPost($args) {
-        if (isset($args['get'])) {
-            $this->GET = $args['get'];
-            unset($args['get']);
+    private function _setGetAndPost() {
+        if (isset($this->args['get'])) {
+            $this->GET = $this->args['get'];
+            unset($this->args['get']);
         }
 
-        if (isset($args['post'])) {
-            $this->POST = $args['post'];
-            unset($args['post']);
+        if (isset($this->args['post'])) {
+            $this->POST = $this->args['post'];
+            unset($this->args['post']);
         }
     }
 
-    private function _checkLoginAndRedirect($args, $isLoggedIn = FALSE) {
-        switch ($isLoggedIn) {
+    public function checkLoginAndRedirect() {
+        switch ($this->_auth->isLoggedIn()) {
             case TRUE:
-                if ($args['controller'] == LOGIN_CONTROLLER) {
+                if ($this->args['controller'] == LOGIN_CONTROLLER) {
                     $this->redirect(DEFAULT_CONTROLLER);
                 }
                 break;
-                
+
             case FALSE:
-                if ($args['controller'] != LOGIN_CONTROLLER) {
+                if ($this->args['controller'] != LOGIN_CONTROLLER) {
                     $this->redirect(LOGIN_CONTROLLER);
                 }
                 break;
-                
+
             default:
                 $this->redirect(LOGIN_CONTROLLER);
                 break;
