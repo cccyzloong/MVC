@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @property Smarty $smarty Description
+ */
+
 class View {
 
     public $smarty;
