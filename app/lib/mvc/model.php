@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @property PDO $DB Description
+ */
+
 class Model extends PDO {
 
     public $DB;
