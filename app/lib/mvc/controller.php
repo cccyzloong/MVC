@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @property View $view Description
+ * @property Model $model Description
+ * @property Auth $_auth Description
+ */
+
 class Controller {
 
     public $GET;
@@ -52,18 +58,18 @@ class Controller {
         switch ($this->_auth->isLoggedIn()) {
             case TRUE:
                 if ($this->args['controller'] == LOGIN_CONTROLLER) {
-                    $this->redirect(DEFAULT_CONTROLLER);
+                    die($this->redirect(DEFAULT_CONTROLLER));
                 }
                 break;
 
             case FALSE:
                 if ($this->args['controller'] != LOGIN_CONTROLLER) {
-                    $this->redirect(LOGIN_CONTROLLER);
+                    die($this->redirect(LOGIN_CONTROLLER));
                 }
                 break;
 
             default:
-                $this->redirect(LOGIN_CONTROLLER);
+                die($this->redirect(LOGIN_CONTROLLER));
                 break;
         }
     }
